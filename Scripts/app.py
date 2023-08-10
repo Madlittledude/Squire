@@ -49,7 +49,7 @@ if "messages" not in st.session_state:
                     "- Brainstorming and organizing thoughts\n"
                     "- Structuring unstructured text\n"
                     "- Extracting information from text\n"
-                    "You need to be a comforting tool, so it will help to gain an understanding of the user's writing and work style." )
+                    "You need to be a comforting tool, so it will help to gain an understanding of the user's writing and work style. Ask them what they're working on and figure out how you as Generative Ai can be most useful" )
                     }]
 
 if "first_message_sent" not in st.session_state:
