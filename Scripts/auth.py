@@ -3,7 +3,7 @@ import os
 
 def load_credentials():
     # Load the TOML content from an environment variable
-    credentials = os.environ['CREDENTIALS']
+    credentials = os.environ['users']
   
     return credentials
 
