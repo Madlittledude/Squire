@@ -2,6 +2,18 @@ import streamlit as st
 import openai
 import os
 from chatUI import display_chat_interface
+from auth import load_credentials authenticate
+def display_login():
+    st.title("Login to Brain Storm :lightning:")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        if authenticate(username, password):
+            st.session_state.username = username
+            st.session_state.logged_in = True
+            st.success("Login successful!")
+        else:
+            st.error("Invalid username or password.")
 
 def display_intro():
     st.title("Welcome to Your Session with Brain Storm :lightning:")
@@ -15,7 +27,11 @@ def display_intro():
     st.write("Remember, it is not a factbook; think of this tool as a springboard for your ideas and a way to initiate work product.")
     st.write(":heart: Max")
 
+
 # Initialization logic
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-4"
 
@@ -42,7 +58,13 @@ if "first_message_sent" not in st.session_state:
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
 # Display logic
-if not st.session_state.first_message_sent:
-    display_intro()
+if st.session_state.logged_in:
+    if not st.session_state.first_message_sent:
+        display_intro()
+    display_chat_interface(st.session_state, openai, st.session_state["openai_model"])
+else:
+    display_login()
 
-display_chat_interface(st.session_state, openai, st.session_state["openai_model"])
+
+
+
