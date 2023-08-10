@@ -14,7 +14,7 @@ def display_chat_interface(session_state, openai, openai_model):
         avatar = assistant if message["role"] == "assistant" else user
         display_chat_message(message["role"], message["content"], avatar)
 
-    prompt = st.chat_input("Start thinking with your fingers...get your thoughts out")
+    prompt = st.chat_input("What are ya working on : )")
     if prompt:
         session_state.first_message_sent = True
         session_state.messages.append({"role": "user", "content": prompt})
