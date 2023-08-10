@@ -5,7 +5,7 @@ from chatUI import display_chat_interface
 from auth import load_credentials, authenticate
 
 # Set up the page layout
-st.set_page_config(page_title="Squire_chatt", page_icon="Assets/pixel_pencil.png", layout='wide')
+st.set_page_config(page_title="Squire_chatt", page_icon="./Assets/pixel_pencil.png", layout='wide')
 
 
 
