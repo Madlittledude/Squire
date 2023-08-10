@@ -33,7 +33,7 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-4"
+    st.session_state["openai_model"] = "gpt-3.5-turbo"
 
 if "messages" not in st.session_state:
     st.session_state.messages = [{
