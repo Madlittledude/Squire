@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 import os
 from chatUI import display_chat_interface
-from auth import load_credentials authenticate
+from auth import load_credentials, authenticate
 def display_login():
     st.title("Login to Brain Storm :lightning:")
     username = st.text_input("Username")
