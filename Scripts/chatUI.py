@@ -63,4 +63,4 @@ def display_chat_message(role, content, avatar):
 
 
 user = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/madlittledude_flipped.png"
-assistant = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/Madlittledude_2.png"
+assistant = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/Madlittledude 2.png"
