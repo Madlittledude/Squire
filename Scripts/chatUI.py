@@ -37,7 +37,7 @@ class ChatManager:
             with st.chat_message("assistant", avatar=assistant):
                 message_placeholder = st.empty()
                 full_response = ""
-                for response in openai.ChatCompletion.create(
+                 for response in openai.ChatCompletion.create(
                     model=self.openai_model,
                     messages=([
                         {"role": m["role"], "content": m["content"]}
@@ -45,11 +45,12 @@ class ChatManager:
                     ]),
                     stream=True,
                 ):
-                    full_response += response.choices[0].message.get("content", "")
+                    full_response += response.choices[0].message['content']
                     message_placeholder.markdown(full_response + "▌")
                 message_placeholder.markdown(full_response)
                 self.session_state.messages.append({"role": "assistant", "content": full_response})
                 self.log_chat(prompt, full_response)
+
 
     def log_chat(self, user_message, assistant_message):
         # Log the chat messages
