@@ -50,7 +50,7 @@ class ChatManager:
 
 
     def log_chat(self, user_message, assistant_message):
-        self.logger.log_chat(user_message, assistant_message)  # Call the log_chat method of ChatLogger
+        self.logger.log_chat(user_message, assistant_message, self.openai_model) 
 
     def save_chat_to_json(self):
         self.logger.save_chat_to_json()  # Call the save_chat_to_json method of ChatLogger
