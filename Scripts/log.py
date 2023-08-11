@@ -1,6 +1,7 @@
 import json
 import boto3
 from datetime import datetime
+import os
 
 class ChatLogger:
     def __init__(self, username):
