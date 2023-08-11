@@ -37,7 +37,7 @@ class ChatManager:
             with st.chat_message("assistant", avatar=assistant):
                 message_placeholder = st.empty()
                 full_response = ""
-                 for response in openai.ChatCompletion.create(
+                for response in openai.ChatCompletion.create(
                     model=self.openai_model,
                     messages=([
                         {"role": m["role"], "content": m["content"]}
