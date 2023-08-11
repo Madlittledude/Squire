@@ -28,12 +28,25 @@ class ChatLogger:
                 })
 
     def save_chat_to_json(self):
-        filename = 'test1.json'
+        # Create a dictionary with only the current session
+        current_chat_session = {
+            "username": self.username,
+            "time": datetime.now().strftime("%I:%M %p"),
+            "chat": self.chat_logs["chat_logs"][-1]  # Assuming you want the latest chat session
+        }
+
+        filename = f'{self.username}_{datetime.now().strftime("%Y%m%d%H%M%S")}.json'
         with open(filename, 'w') as file:
-            json.dump(self.chat_logs, file)
+            json.dump(current_chat_session, file)
+
+        # Pull credentials from environment variables
+        aws_access_key_id = os.environ['ACCESS_KEY']
+        aws_secret_access_key = os.environ['SECRET_KEY']
 
         # Upload the JSON file to S3
-        client = boto3.client('s3', aws_access_key_id="ACCESS_KEY", aws_secret_access_key="SECRET_KEY")
+        client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
         upload_file_bucket = 'brainstormdata'
-        upload_file_key = str('test1.json')
+        upload_file_key = filename
         client.upload_file(filename, upload_file_bucket, upload_file_key)
+
+
