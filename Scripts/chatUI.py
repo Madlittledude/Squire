@@ -49,7 +49,7 @@ class ChatManager:
                 self.log_chat(prompt, full_response)
 
 
-   def log_chat(self, user_message, assistant_message):
+    def log_chat(self, user_message, assistant_message):
         self.logger.log_chat(user_message, assistant_message) 
 
     def save_chat_to_json(self):
