@@ -4,8 +4,6 @@ import json
 import boto3
 from datetime import datetime
 
-user = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/madlittledude_flipped.png"
-assistant = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/madlittledudette_flipped.png"
 
 class ChatManager:
     def __init__(self, session_state, openai_model, username):
@@ -88,4 +86,4 @@ def display_chat_message(role, content, avatar):
 
 
 user = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/madlittledude_flipped.png"
-assistant = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/madlittledudette_flipped.png"
+assistant = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/Madlittledude_2.png"
