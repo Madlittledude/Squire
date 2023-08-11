@@ -80,7 +80,10 @@ class ChatManager:
         upload_file_bucket = 'brainstormdata'
         upload_file_key = str('test1.json')
         client.upload_file(filename, upload_file_bucket, upload_file_key)
-
+        
+def display_chat_message(role, content, avatar):
+    with st.chat_message(role, avatar=avatar):
+        st.markdown(content)
 
 
 user = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/madlittledude_flipped.png"
