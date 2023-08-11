@@ -11,7 +11,7 @@ class ChatManager:
         self.session_state = session_state
         self.openai_model = openai_model
         self.username = username
-        self.logger = ChatLogger(usename)
+        self.logger = ChatLogger(username)
    
 
     def display_chat_message(self, role, content, avatar):
