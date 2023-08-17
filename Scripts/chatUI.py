@@ -57,12 +57,8 @@ class ChatManager:
     def log_chat(self, user_message, assistant_message):
         self.logger.log_chat(user_message, assistant_message) 
 
-    def save_chat_to_json(self):
-        user_message = self.session_state.messages[-2]["content"] if len(self.session_state.messages) > 1 else ""
-        assistant_message = self.session_state.messages[-1]["content"] if self.session_state.messages[-1]["role"] == "assistant" else ""
-        self.log_chat(user_message, assistant_message)  # Log the messages
-        self.logger.save_chat_to_json()  # Save the chat after logging
-
+     def save_chat_to_json(self):
+        self.logger.save_chat_to_json(self.session_state.messages[-2:], self.openai_model)
 
         
 def display_chat_message(role, content, avatar):
