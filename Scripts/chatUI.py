@@ -50,7 +50,7 @@ class ChatManager:
     
                 message_placeholder.markdown(full_response)
                 self.session_state.messages.append({"role": "assistant", "content": full_response})
-                self.log_chat('', full_response) # Log the assistant's message
+                self.logger.log_chat(prompt, '')  # Log the user's message using the ChatLogger instance
                 self.save_chat_to_json()  # Save the chat after logging the assistant's message
 
 
