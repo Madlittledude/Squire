@@ -12,7 +12,11 @@ class ChatLogger:
     def load_existing_logs(self):
         bucket_name = 'brainstormdata'
         key = f'{self.username}_chat_history.json'
-        client = boto3.client('s3')  # Add your access credentials if required
+        
+        client = boto3.client(
+            's3',
+            aws_access_key_id='ACCESS_KEY',
+            aws_secret_access_key='SECRET_KEY'
         try:
             response = client.get_object(Bucket=bucket_name, Key=key)
             self.chat_history = json.load(response['Body'])
@@ -46,6 +50,10 @@ class ChatLogger:
     def save_chat_to_json(self):
         bucket_name = 'brainstormdata'
         key = f'{self.username}_chat_history.json'
-        client = boto3.client('s3','ACCESS_KEY','SECRET_KEY')  # Add your access credentials if required
+        client = boto3.client(
+            's3',
+            aws_access_key_id='ACCESS_KEY',
+            aws_secret_access_key='SECRET_KEY'
+        )
         chat_json = json.dumps(self.chat_history)
         client.put_object(Body=chat_json, Bucket=bucket_name, Key=key)
