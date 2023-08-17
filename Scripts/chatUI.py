@@ -12,7 +12,6 @@ class ChatManager:
         self.openai_model = openai_model
         self.username = username
         self.logger = ChatLogger(username)
-   
 
     def display_chat_message(self, role, content, avatar):
         with st.chat_message(role, avatar=avatar):
@@ -26,12 +25,12 @@ class ChatManager:
             self.display_chat_message(message["role"], message["content"], avatar)
 
         prompt = st.chat_input("What are ya working on : )")
-       
+
         if prompt:
             self.session_state.first_message_sent = True
             self.session_state.messages.append({"role": "user", "content": prompt})
-            self.display_chat_message("user", prompt,avatar)  
-        
+            self.display_chat_message("user", prompt, user)  # Pass the user avatar directly
+
             with st.chat_message("assistant", avatar=assistant):
                 message_placeholder = st.empty()
                 full_response = ""
@@ -45,15 +44,12 @@ class ChatManager:
                 ):
                     full_response += response.choices[0].delta.get("content", "")
                     message_placeholder.markdown(full_response + "▌")
-        
+
                 message_placeholder.markdown(full_response)
                 self.session_state.messages.append({"role": "assistant", "content": full_response})
-        
+
             self.logger.log_chat(prompt, full_response)  # Log the conversation using the ChatLogger instance
             self.save_chat_to_json()  # Save the chat after logging the conversation
-        
-                
-
 
 
         def log_chat(self, user_message, assistant_message):
