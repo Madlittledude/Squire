@@ -17,10 +17,11 @@ class ChatManager:
             st.markdown(content)
 
     def display_chat_interface(self):
+        avatar = assistant if self.session_state.messages[-1]["role"] == "assistant" else user
+        
         for message in self.session_state.messages:
             if message["role"] == "system":
                 continue
-            avatar = assistant if message["role"] == "assistant" else user
             self.display_chat_message(message["role"], message["content"], avatar)
 
         prompt = st.chat_input("What are ya working on : )")
@@ -30,7 +31,7 @@ class ChatManager:
             self.session_state.messages.append({"role": "user", "content": prompt})
             self.display_chat_message("user", prompt, user)  # Pass the user avatar directly
 
-            with st.chat_message("assistant", avatar=assistant):
+            with st.chat_message("assistant", avatar=avatar):
                 message_placeholder = st.empty()
                 full_response = ""
                 for response in openai.ChatCompletion.create(
