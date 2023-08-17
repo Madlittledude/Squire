@@ -26,11 +26,14 @@ class ChatManager:
             self.display_chat_message(message["role"], message["content"], avatar)
 
         prompt = st.chat_input("What are ya working on : )")
+       
         if prompt:
             self.session_state.first_message_sent = True
             self.session_state.messages.append({"role": "user", "content": prompt})
             self.display_chat_message("user", prompt, user)
-
+            self.log_chat(prompt, '')  # Log the user's message
+            self.save_chat_to_json()   # Save the chat after logging the user's message
+    
             with st.chat_message("assistant", avatar=assistant):
                 message_placeholder = st.empty()
                 full_response = ""
@@ -44,9 +47,11 @@ class ChatManager:
                 ):
                     full_response += response.choices[0].delta.get("content", "")
                     message_placeholder.markdown(full_response + "▌")
+    
                 message_placeholder.markdown(full_response)
                 self.session_state.messages.append({"role": "assistant", "content": full_response})
-                self.log_chat(prompt, full_response)
+                self.log_chat('', full_response) # Log the assistant's message
+                self.save_chat_to_json()  # Save the chat after logging the assistant's message
 
 
     def log_chat(self, user_message, assistant_message):
