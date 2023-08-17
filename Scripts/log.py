@@ -1,6 +1,7 @@
 import boto3
 import json
 from datetime import datetime
+import os
 
 class ChatLogger:
     def __init__(self, username):
@@ -8,10 +9,12 @@ class ChatLogger:
         self.date = datetime.utcnow().strftime('%Y-%m-%d')
         self.client = boto3.client('s3',
                            region_name='us-west-1',
-                           aws_access_key_id="YOUR_ACCESS_KEY",
-                           aws_secret_access_key="YOUR_SECRET_KEY")
+                           aws_access_key_id=os.environ["ACCESS_KEY"],
+                           aws_secret_access_key=os.environ["SECRET_KEY"])
         self.load_existing_logs()
         self.start_new_session()
+
+
 
     def load_existing_logs(self):
         bucket_name = 'brainstormdata'
