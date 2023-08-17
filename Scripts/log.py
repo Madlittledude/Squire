@@ -44,7 +44,22 @@ class ChatLogger:
         )
         self.save_chat_to_json()
 
+    
     def save_chat_to_json(self):
         key = f'{self.username}_chat_history.json'
         chat_json = json.dumps(self.chat_history)
-        self.conn.write(f"brainstormdata/{key}", chat_json, overwrite=True)  # Adjusted write method
+        
+        # Assuming you have AWS credentials set up in your environment
+        s3_client = boto3.client('s3')
+        bucket_name = 'brainstormdata'  # Replace with your bucket name
+        
+        response = s3_client.put_object(
+            Body=chat_json,
+            Bucket=bucket_name,
+            Key=f"brainstormdata/{key}"
+        )
+        
+        if response['ResponseMetadata']['HTTPStatusCode'] == 200:
+            st.write('File saved successfully')
+        else:
+            st.write('Failed to save file')
