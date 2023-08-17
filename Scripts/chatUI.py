@@ -57,9 +57,6 @@ class ChatManager:
     def save_chat_to_json(self):
         self.logger.save_chat_to_json(self.session_state.messages[-2:], self.openai_model)
 
-        
-
-
 
 user = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/madlittledude_flipped.png"
 assistant = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/Madlittledude 2.png"
