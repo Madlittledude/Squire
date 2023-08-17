@@ -1,28 +1,28 @@
+import boto3
 import json
 import os
-import streamlit as st
-from st_files_connection import FilesConnection
+import tempfile
 from datetime import datetime
-import boto3
+import streamlit as st
 
 class ChatLogger:
     def __init__(self, username):
         self.username = username
+        self.access = os.environ['ACCESS_KEY']
+        self.secret = os.environ['SECRET_KEY']
         self.date = datetime.utcnow().strftime('%Y-%m-%d')
-        self.conn = st.experimental_connection('s3', type=FilesConnection)  # Create connection object
         self.load_existing_logs()
         self.start_new_session()
 
     def load_existing_logs(self):
         key = f'{self.username}_chat_history.json'
         try:
-            response = self.conn.read(f"brainstormdata/{key}", input_format="json", ttl=600)  # Adjusted read method
-            self.chat_history = response
+            s3 = boto3.client('s3', aws_access_key_id=self.access, aws_secret_access_key=self.secret)
+            response = s3.get_object(Bucket="brainstormdata", Key=key)
+            self.chat_history = json.loads(response['Body'].read().decode('utf-8'))
         except:
             self.chat_history = {"user_id": self.username, "logs": []}
 
-        today_log = [log for log in self.chat_history["logs"] if log["date"] == self.date]
-        self.session_count = len(today_log[0]["sessions"]) if today_log else 0
 
     def start_new_session(self):
         session_data = {"session_id": f"session{self.session_count + 1}", "messages": []}
