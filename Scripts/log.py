@@ -14,8 +14,6 @@ class ChatLogger:
         self.load_existing_logs()
         self.start_new_session()
 
-
-
     def load_existing_logs(self):
         bucket_name = 'brainstormdata'
         key = f'{self.username}_chat_history.json'
@@ -43,7 +41,6 @@ class ChatLogger:
             self.chat_history["logs"].append(date_log)
         self.session_count += 1
 
-    
     def log_chat(self, user_message, assistant_message):
         time_now = datetime.utcnow().strftime('%H:%M:%S')
         if user_message:
@@ -55,24 +52,14 @@ class ChatLogger:
                 {"sender": "assistant", "message": assistant_message, "time": time_now}
             )
 
+    def save_chat_to_s3(self):
+        # Save the chat history to S3 bucket
+        bucket_name = 'brainstormdata'
+        key = f'{self.username}_chat_history.json'
+        self.client.put_object(
+            Bucket=bucket_name,
+            Key=key,
+            Body=json.dumps(self.chat_history, indent=2)
+        )
 
-    def save_chat_to_json(self, messages, openai_model):
-        session_messages = []
-        for message in messages:
-            if message["role"] == "user":
-                sender = "user"
-                content = message["content"]
-            else:
-                sender = "assistant"
-                response = openai_model.send_message(message["content"])  # Replace with actual OpenAI interaction
-                content = response["choices"][0]["message"]["content"]
-            time_now = datetime.utcnow().strftime('%H:%M:%S')
-            session_messages.append({"sender": sender, "message": content, "time": time_now})
-        
-        if self.chat_history["logs"]:
-            self.chat_history["logs"][-1]["sessions"][-1]["messages"] = session_messages
-        else:
-            self.chat_history["logs"].append({"date": self.date, "sessions": [{"session_id": "session1", "messages": session_messages}]})
-
-        self.save_chat_to_json()  # Corrected method name
 
