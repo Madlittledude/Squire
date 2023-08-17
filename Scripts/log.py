@@ -16,7 +16,7 @@ class ChatLogger:
         client = boto3.client(
             's3',
             aws_access_key_id='ACCESS_KEY',
-            aws_secret_access_key='SECRET_KEY'
+            aws_secret_access_key='SECRET_KEY')
         try:
             response = client.get_object(Bucket=bucket_name, Key=key)
             self.chat_history = json.load(response['Body'])
