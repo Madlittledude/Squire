@@ -46,21 +46,27 @@ class ChatLogger:
         self.save_chat_to_json()
 
     
+    import tempfile
+
     def save_chat_to_json(self):
         key = f'{self.username}_chat_history.json'
         chat_json = json.dumps(self.chat_history)
-        
-        # Assuming you have AWS credentials set up in your environment
-        s3_client = boto3.client('s3')
-        bucket_name = 'brainstormdata'  # Replace with your bucket name
-        
-        response = s3_client.put_object(
-            Body=chat_json,
-            Bucket=bucket_name,
-            Key=f"brainstormdata/{key}"
-        )
-        
-        if response['ResponseMetadata']['HTTPStatusCode'] == 200:
-            st.write('File saved successfully')
+    
+        # Create a temporary file to hold the JSON data
+        with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
+            temp_file.write(chat_json)
+            temp_file_path = temp_file.name
+    
+        # Define your S3 bucket name and file path
+        bucket = 'brainstormdata'
+        s3_file_path = f"brainstormdata/{key}"
+    
+        # Upload the temporary file to S3 using the upload_to_aws function
+        success = upload_to_aws(temp_file_path, bucket, s3_file_path)
+    
+        if success:
+            print("Upload successful")
+            os.remove(temp_file_path)  # Remove the temporary file
         else:
-            st.write('Failed to save file')
+            print("Failed to upload file to S3")
+
