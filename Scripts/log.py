@@ -1,27 +1,22 @@
 import json
-import boto3
-from datetime import datetime
 import os
-
+import streamlit as st
+from st_files_connection import FilesConnection
+from datetime import datetime
 
 class ChatLogger:
     def __init__(self, username):
         self.username = username
         self.date = datetime.utcnow().strftime('%Y-%m-%d')
+        self.conn = st.experimental_connection('s3', type=FilesConnection)  # Create connection object
         self.load_existing_logs()
         self.start_new_session()
 
     def load_existing_logs(self):
-        bucket_name = 'brainstormdata'
         key = f'{self.username}_chat_history.json'
-        
-        client = boto3.client(
-            's3',
-            aws_access_key_id=os.environ['ACCESS_KEY'],
-            aws_secret_access_key=os.environ['SECRET_KEY'])
         try:
-            response = client.get_object(Bucket=bucket_name, Key=key)
-            self.chat_history = json.load(response['Body'])
+            response = self.conn.read(f"brainstormdata/{key}", input_format="json", ttl=600)  # Adjusted read method
+            self.chat_history = response
         except:
             self.chat_history = {"user_id": self.username, "logs": []}
 
@@ -50,12 +45,6 @@ class ChatLogger:
         self.save_chat_to_json()
 
     def save_chat_to_json(self):
-        bucket_name = 'brainstormdata'
         key = f'{self.username}_chat_history.json'
-        client = boto3.client(
-            's3',
-            aws_access_key_id='ACCESS_KEY',
-            aws_secret_access_key='SECRET_KEY'
-        )
         chat_json = json.dumps(self.chat_history)
-        client.put_object(Body=chat_json, Bucket=bucket_name, Key=key)
+        self.conn.write(f"brainstormdata/{key}", chat_json, overwrite=True)  # Adjusted write method
