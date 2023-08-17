@@ -1,38 +1,51 @@
 import json
 import boto3
 from datetime import datetime
-import os
 
 class ChatLogger:
     def __init__(self, username):
         self.username = username
-        self.chat_logs = {
-            "username": username,
-            "chat_logs": []
-        }
+        self.date = datetime.utcnow().strftime('%Y-%m-%d')
+        self.load_existing_logs()
+        self.start_new_session()
+
+    def load_existing_logs(self):
+        bucket_name = 'brainstormdata'
+        key = f'{self.username}_chat_history.json'
+        client = boto3.client('s3')  # Add your access credentials if required
+        try:
+            response = client.get_object(Bucket=bucket_name, Key=key)
+            self.chat_history = json.load(response['Body'])
+        except:
+            self.chat_history = {"user_id": self.username, "logs": []}
+
+        today_log = [log for log in self.chat_history["logs"] if log["date"] == self.date]
+        self.session_count = len(today_log[0]["sessions"]) if today_log else 0
+
+    def start_new_session(self):
+        session_data = {"session_id": f"session{self.session_count + 1}", "messages": []}
+        today_log = [log for log in self.chat_history["logs"] if log["date"] == self.date]
+        if today_log:
+            today_log[0]["sessions"].append(session_data)
+        else:
+            date_log = {"date": self.date, "sessions": [session_data]}
+            self.chat_history["logs"].append(date_log)
+
+        self.session_count += 1
 
     def log_chat(self, user_message, assistant_message):
-        chat_entry = {"user": user_message, "assistant": assistant_message}
-        current_day = datetime.now().strftime("%Y-%m-%d")
-        if not self.chat_logs["chat_logs"] or self.chat_logs["chat_logs"][-1]["day"] != current_day:
-            self.chat_logs["chat_logs"].append({
-                "day": current_day,
-                "sessions": [{"session_start_time": datetime.now().strftime("%I:%M %p"), "chat": []}]
-            })
-        
-        self.chat_logs["chat_logs"][-1]["sessions"][-1]["chat"].append(chat_entry)
-        self.save_chat_to_json() # Save the chat log immediately after logging
+        time_now = datetime.utcnow().strftime('%H:%M:%S')
+        self.chat_history["logs"][-1]["sessions"][-1]["messages"].append(
+            {"sender": "user", "message": user_message, "time": time_now}
+        )
+        self.chat_history["logs"][-1]["sessions"][-1]["messages"].append(
+            {"sender": "assistant", "message": assistant_message, "time": time_now}
+        )
+        self.save_chat_to_json()
 
     def save_chat_to_json(self):
-        filename = f'{self.username}_{datetime.now().strftime("%Y%m%d%H%M%S")}.json'
-        with open(filename, 'w') as file:
-            json.dump(self.chat_logs, file)
-
-        aws_access_key_id = os.environ['ACCESS_KEY']
-        aws_secret_access_key = os.environ['SECRET_KEY']
-
-        client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-        upload_file_bucket = 'brainstormdata'
-        upload_file_key = filename
-        client.upload_file(filename, upload_file_bucket, upload_file_key)
-
+        bucket_name = 'brainstormdata'
+        key = f'{self.username}_chat_history.json'
+        client = boto3.client('s3','ACCESS_KEY','SECRET_KEY')  # Add your access credentials if required
+        chat_json = json.dumps(self.chat_history)
+        client.put_object(Body=chat_json, Bucket=bucket_name, Key=key)
