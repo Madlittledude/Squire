@@ -72,10 +72,7 @@ if st.session_state.logged_in:
 else:
     display_login()
 
-# Save chat to JSON and upload to S3 when the session ends
-if st.button("End Session"):
-    chat_manager.save_chat_to_json()
-    st.success("Session ended and chat logs saved.")
+
 
 
 
