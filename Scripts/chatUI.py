@@ -5,7 +5,6 @@ import boto3
 from datetime import datetime
 from log import ChatLogger
 
-
 class ChatManager:
     def __init__(self, session_state, openai_model, username):
         self.session_state = session_state
@@ -48,8 +47,8 @@ class ChatManager:
                 message_placeholder.markdown(full_response)
                 self.session_state.messages.append({"role": "assistant", "content": full_response})
 
-            self.logger.log_chat(prompt, full_response)  # Log the conversation using the ChatLogger instance
-            self.save_chat_to_json()  # Save the chat after logging the conversation
+                self.logger.log_chat(prompt, full_response)  # Log the conversation using the ChatLogger instance
+                self.save_chat_to_json()  # Save the chat after logging the conversation
 
     def log_chat(self, user_message, assistant_message):
         self.logger.log_chat(user_message, assistant_message) 
@@ -57,6 +56,6 @@ class ChatManager:
     def save_chat_to_json(self):
         self.logger.save_chat_to_json(self.session_state.messages[-2:], self.openai_model)
 
-
 user = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/madlittledude_flipped.png"
-assistant = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/Madlittledude 2.png"
+assistant = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/Madlittledude%202.png"
+
