@@ -30,7 +30,7 @@ class ChatManager:
         if prompt:
             self.session_state.first_message_sent = True
             self.session_state.messages.append({"role": "user", "content": prompt})
-            self.display_chat_message("user", prompt, user, user)  # Add the avatar argument
+            self.display_chat_message("user", prompt)  
         
             with st.chat_message("assistant", avatar=assistant):
                 message_placeholder = st.empty()
