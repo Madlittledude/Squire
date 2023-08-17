@@ -47,26 +47,40 @@ class ChatLogger:
 
     
     import tempfile
+    access = os.environ['ACCESS_KEY']
+    secret = os.environ['SECRET_KEY']
+    def upload_to_aws(self, local_file, bucket, s3_file):
+        s3 = boto3.client('s3',access,secret)
+
+        try:
+            s3.upload_file(local_file, bucket, s3_file)
+            print("Upload Successful")
+            return True
+        except FileNotFoundError:
+            print("The file was not found")
+            return False
+        except Exception as e:
+            print("Something went wrong:", e)
+            return False
 
     def save_chat_to_json(self):
         key = f'{self.username}_chat_history.json'
         chat_json = json.dumps(self.chat_history)
-    
+
         # Create a temporary file to hold the JSON data
         with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
             temp_file.write(chat_json)
             temp_file_path = temp_file.name
-    
+
         # Define your S3 bucket name and file path
         bucket = 'brainstormdata'
-        s3_file_path = f"brainstormdata/{key}"
-    
+        s3_file_path = f"{bucket}/{key}"
+
         # Upload the temporary file to S3 using the upload_to_aws function
-        success = upload_to_aws(temp_file_path, bucket, s3_file_path)
-    
+        success = self.upload_to_aws(temp_file_path, bucket, s3_file_path)
+
         if success:
             print("Upload successful")
             os.remove(temp_file_path)  # Remove the temporary file
         else:
             print("Failed to upload file to S3")
-
