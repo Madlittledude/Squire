@@ -31,7 +31,8 @@ class ChatManager:
             self.session_state.first_message_sent = True
             self.session_state.messages.append({"role": "user", "content": prompt})
             self.display_chat_message("user", prompt, user)
-            self.log_chat(prompt, '')  # Log the user's message
+            self.logger.log_chat(prompt, '')  # Log the user's message using the ChatLogger instance
+
            
     
             with st.chat_message("assistant", avatar=assistant):
