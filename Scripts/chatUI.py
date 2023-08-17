@@ -54,11 +54,11 @@ class ChatManager:
                 self.save_chat_to_json()  # Save the chat after logging the assistant's message
 
 
-     def log_chat(self, user_message, assistant_message):
-        self.logger.log_chat(user_message, assistant_message) 
-
-     def save_chat_to_json(self):
-        self.logger.save_chat_to_json(self.session_state.messages[-2:], self.openai_model)
+        def log_chat(self, user_message, assistant_message):
+            self.logger.log_chat(user_message, assistant_message) 
+        
+        def save_chat_to_json(self):
+            self.logger.save_chat_to_json(self.session_state.messages[-2:], self.openai_model)
 
         
 def display_chat_message(role, content, avatar):
