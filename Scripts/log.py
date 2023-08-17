@@ -3,6 +3,7 @@ import os
 import streamlit as st
 from st_files_connection import FilesConnection
 from datetime import datetime
+import boto3
 
 class ChatLogger:
     def __init__(self, username):
