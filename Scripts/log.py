@@ -47,10 +47,8 @@ class ChatLogger:
 
     
     import tempfile
-    access = os.environ['ACCESS_KEY']
-    secret = os.environ['SECRET_KEY']
     def upload_to_aws(self, local_file, bucket, s3_file):
-        s3 = boto3.client('s3',access,secret)
+        s3 = boto3.client('s3', aws_access_key_id=self.access, aws_secret_access_key=self.secret)
 
         try:
             s3.upload_file(local_file, bucket, s3_file)
