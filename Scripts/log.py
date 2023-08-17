@@ -1,6 +1,8 @@
 import json
 import boto3
 from datetime import datetime
+import os
+
 
 class ChatLogger:
     def __init__(self, username):
@@ -15,8 +17,8 @@ class ChatLogger:
         
         client = boto3.client(
             's3',
-            aws_access_key_id='ACCESS_KEY',
-            aws_secret_access_key='SECRET_KEY')
+            aws_access_key_id=os.environ['ACCESS_KEY'],
+            aws_secret_access_key=os.environ['SECRET_KEY'])
         try:
             response = client.get_object(Bucket=bucket_name, Key=key)
             self.chat_history = json.load(response['Body'])
