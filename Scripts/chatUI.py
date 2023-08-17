@@ -51,12 +51,11 @@ class ChatManager:
             self.logger.log_chat(prompt, full_response)  # Log the conversation using the ChatLogger instance
             self.save_chat_to_json()  # Save the chat after logging the conversation
 
-
-        def log_chat(self, user_message, assistant_message):
-            self.logger.log_chat(user_message, assistant_message) 
+    def log_chat(self, user_message, assistant_message):
+        self.logger.log_chat(user_message, assistant_message) 
         
-        def save_chat_to_json(self):
-            self.logger.save_chat_to_json(self.session_state.messages[-2:], self.openai_model)
+    def save_chat_to_json(self):
+        self.logger.save_chat_to_json(self.session_state.messages[-2:], self.openai_model)
 
         
 
