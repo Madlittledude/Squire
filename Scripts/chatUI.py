@@ -30,7 +30,7 @@ class ChatManager:
         if prompt:
             self.session_state.first_message_sent = True
             self.session_state.messages.append({"role": "user", "content": prompt})
-            self.display_chat_message("user", prompt, user)
+            self.display_chat_message("user", prompt, user, user)  # Add the avatar argument
         
             with st.chat_message("assistant", avatar=assistant):
                 message_placeholder = st.empty()
@@ -52,6 +52,7 @@ class ChatManager:
             self.logger.log_chat(prompt, full_response)  # Log the conversation using the ChatLogger instance
             self.save_chat_to_json()  # Save the chat after logging the conversation
         
+                
 
 
 
