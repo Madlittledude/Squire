@@ -32,7 +32,7 @@ class ChatManager:
             self.session_state.messages.append({"role": "user", "content": prompt})
             self.display_chat_message("user", prompt, user)
             self.log_chat(prompt, '')  # Log the user's message
-            self.save_chat_to_json()   # Save the chat after logging the user's message
+           
     
             with st.chat_message("assistant", avatar=assistant):
                 message_placeholder = st.empty()
