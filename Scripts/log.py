@@ -7,8 +7,9 @@ class ChatLogger:
         self.username = username
         self.date = datetime.utcnow().strftime('%Y-%m-%d')
         self.client = boto3.client('s3',
-                                   aws_access_key_id="YOUR_ACCESS_KEY",
-                                   aws_secret_access_key="YOUR_SECRET_KEY")
+                           region_name='us-west-1',
+                           aws_access_key_id="YOUR_ACCESS_KEY",
+                           aws_secret_access_key="YOUR_SECRET_KEY")
         self.load_existing_logs()
         self.start_new_session()
 
