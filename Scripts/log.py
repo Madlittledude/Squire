@@ -74,4 +74,5 @@ class ChatLogger:
         else:
             self.chat_history["logs"].append({"date": self.date, "sessions": [{"session_id": "session1", "messages": session_messages}]})
 
-        self.save_chat_to_s3()
+        self.save_chat_to_json()  # Corrected method name
+
