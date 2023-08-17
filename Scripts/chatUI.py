@@ -62,9 +62,9 @@ class ChatManager:
             self.logger.save_chat_to_json(self.session_state.messages[-2:], self.openai_model)
 
         
-def display_chat_message(role, content, avatar):
-    with st.chat_message(role, avatar=avatar):
-        st.markdown(content)
+    def display_chat_message(role, content, avatar):
+        with st.chat_message(role, avatar=avatar):
+            st.markdown(content)
 
 
 user = "https://raw.githubusercontent.com/Madlittledude/Squire/main/Assets/madlittledude_flipped.png"
