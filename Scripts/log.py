@@ -43,14 +43,18 @@ class ChatLogger:
             self.chat_history["logs"].append(date_log)
         self.session_count += 1
 
+    
     def log_chat(self, user_message, assistant_message):
         time_now = datetime.utcnow().strftime('%H:%M:%S')
-        self.chat_history["logs"][-1]["sessions"][-1]["messages"].append(
-            {"sender": "user", "message": user_message, "time": time_now}
-        )
-        self.chat_history["logs"][-1]["sessions"][-1]["messages"].append(
-            {"sender": "assistant", "message": assistant_message, "time": time_now}
-        )
+        if user_message:
+            self.chat_history["logs"][-1]["sessions"][-1]["messages"].append(
+                {"sender": "user", "message": user_message, "time": time_now}
+            )
+        if assistant_message:
+            self.chat_history["logs"][-1]["sessions"][-1]["messages"].append(
+                {"sender": "assistant", "message": assistant_message, "time": time_now}
+            )
+
 
     def save_chat_to_json(self):
         bucket_name = 'brainstormdata'
