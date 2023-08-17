@@ -56,8 +56,22 @@ class ChatLogger:
             )
 
 
-    def save_chat_to_json(self):
-        bucket_name = 'brainstormdata'
-        key = f'{self.username}_chat_history.json'
-        chat_json = json.dumps(self.chat_history)
-        self.client.put_object(Body=chat_json, Bucket=bucket_name, Key=key)
+    def save_chat_to_json(self, messages, openai_model):
+        session_messages = []
+        for message in messages:
+            if message["role"] == "user":
+                sender = "user"
+                content = message["content"]
+            else:
+                sender = "assistant"
+                response = openai_model.send_message(message["content"])  # Replace with actual OpenAI interaction
+                content = response["choices"][0]["message"]["content"]
+            time_now = datetime.utcnow().strftime('%H:%M:%S')
+            session_messages.append({"sender": sender, "message": content, "time": time_now})
+        
+        if self.chat_history["logs"]:
+            self.chat_history["logs"][-1]["sessions"][-1]["messages"] = session_messages
+        else:
+            self.chat_history["logs"].append({"date": self.date, "sessions": [{"session_id": "session1", "messages": session_messages}]})
+
+        self.save_chat_to_s3()
