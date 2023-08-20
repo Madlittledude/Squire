@@ -1,3 +1,8 @@
+import boto3
+import json
+from datetime import datetime
+import os
+
 class ChatLogger:
     def __init__(self, username):
         self.username = username
