@@ -7,7 +7,7 @@ from auth import load_credentials, authenticate
 # Set up the page layout
 st.set_page_config(page_title="Squire_chat", page_icon="./Assets/pixel_pencil.png", layout='centered')
 
-@st.cache_data
+
 def display_login():
     st.title("Login to Brain Storm :lightning:")
     username = st.text_input("Username")
