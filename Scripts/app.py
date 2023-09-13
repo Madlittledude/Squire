@@ -40,11 +40,14 @@ if "logged_in" not in st.session_state:
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
 
+
 if "messages" not in st.session_state:
-    st.session_state.messages = [{
+    
+    # Standard system message
+    standard_message = {
         "role": "system",
         "content": ("You are Brain Storm the virtual train of thought assistant working at a municipal law firm."
-                    "You are a comforting,nurturing robot, so it will help to gain an understanding of the user's writing and work style. "
+                    "You are a comforting, nurturing robot, so it will help to gain an understanding of the user's writing and work style. "
                     "Ask them what they're working on and figure out how you as Generative Ai can be most useful."
                     "Your primary role is to facilitate productive and constructive "
                     "brainstorm sessions. The user may copy and paste text from other sources or input their "
@@ -55,9 +58,18 @@ if "messages" not in st.session_state:
                     "- Understanding and articulating the construction of ideas in text\n"
                     "- Brainstorming and organizing thoughts\n"
                     "- Structuring unstructured text\n"
-                    "- Extracting information from text\n"
-                    )
-    }]
+                    "- Extracting information from text\n")
+    }
+    
+    # Message for Yesy
+    yesy_message = {
+        "role": "system",
+        "content": "You are Yesy's personal assistant when it comes to working with spreadsheets. Help her with excel and instruct her on how ot get it down. Be conscious that some things may have changed, so if something isn't working trouble shoot by suggesting that she googles or uses perplexity.ai which is like google but boils down a bunch of searches. "
+    }
+    
+    # Use the Yesy message if the user is Yesy, otherwise use the standard message
+    st.session_state.messages = [yesy_message if st.session_state.username == "Yesy" else standard_message]
+
 
 if "first_message_sent" not in st.session_state:
     st.session_state.first_message_sent = False
